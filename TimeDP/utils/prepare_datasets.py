@@ -28,7 +28,7 @@ def download_monash_dataset():
         'pedestrian': 'https://zenodo.org/records/4656626/files/pedestrian_counts_dataset.zip?download=1'
     }
     for dataset_name in ['temprain', 'wind_4_seconds', 'pedestrian']:
-        # 下载 ZIP 文件
+        # download the zip file
         url = url_map[dataset_name]
         zip_path = f"{dataset_name}.zip"
 
@@ -40,13 +40,13 @@ def download_monash_dataset():
                     file.write(chunk)
         print("Download complete.")
 
-        # 解压 ZIP 文件
+        # Unzip the ZIP file
         extract_path = "./data"
         with zipfile.ZipFile(zip_path, "r") as zip_ref:
             zip_ref.extractall(extract_path)
         print(f"Files extracted to {extract_path}")
 
-        # 删除 ZIP 文件
+        # Deleting the ZIP file
         os.remove(zip_path)
         print("ZIP file deleted.")
 

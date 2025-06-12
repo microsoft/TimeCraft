@@ -95,15 +95,56 @@ Clone this repository and setup enviroment.
 conda env create -f environment.yaml
 ```
 
-### 2. Preparation for text controlled generation (Optional)  
-#### 2.1 Get text templates 
+### 2. How to Use Data
+#### 2.1 Supported Public Datasets
+
+TimeCraft includes automatic support for downloading and preprocessing several publicly available datasets, for example:
+
+- [Temperature and Rain Dataset (Monash)](https://zenodo.org/records/5129091/files/temperature_rain_dataset_without_missing_values.zip?download=1)
+- [Wind Dataset (4-Second Interval)](https://zenodo.org/records/4656032/files/wind_4_seconds_dataset.zip?download=1)
+- [Pedestrian Counts Dataset](https://zenodo.org/records/4656626/files/pedestrian_counts_dataset.zip?download=1)
+
+You can manually download these datasets from the links above, or simply run the `prepare_datasets.py` script, which automates the download, extraction, and transformation into model-ready formats.
+
+#### 2.2 Downloading and Processing Datasets
+
+Run the following command to execute the script:
+
+```bash
+python TimeDP/utils/prepare_datasets.py
+```
+
+This script performs several preprocessing steps:
+
+1. **Dataset Download**:
+   - Automatically fetches public datasets from sources like Zenodo (e.g., Monash TSF datasets for temperature/rain, wind, and pedestrian counts).
+   - Loads benchmark datasets (e.g., solar, electricity, traffic) using GluonTS.
+   - Also retrieves example financial time series from the TimeGAN repository (e.g., stock prices).
+
+2. **Data Preprocess**:
+   - Concatenates train and test splits to form a complete time series.
+   - Saves a multivariate series into a time-indexed CSV format under `./data/`.
+   - Converts `.tsf` (Time Series Format) files into pandas DataFrames.
+   - Extracts series based on feature tags like `PRCP_SUM` for rain or `T_MEAN` for temperature.
+
+3. **Sliding Window Segmentation**:
+   - For each dataset, applies sliding window segmentation with various sequence lengths (`24, 96, 168, 336`).
+   - Each window forms a data sample of fixed length.
+   - Outputs `.npy` files for training and validation sets (e.g., `electricity_96_train.npy`).
+
+4. **Zero-shot Setup (Optional)**:
+   - For selected datasets like `stock` and `web`, prepares fixed test and prompt samples for zero-shot evaluation.
+   - Saves prompt/test slices and exports prompt sequences to CSV for inspection.
+
+### 3. Preparation for text controlled generation (Optional)  
+#### 3.1 Get text templates 
 
 We provide example text templates and you can use them directly to build your dataset [here](process/text_templates_example.json).
 These templates are designed to describe time series data in a structured and diverse manner, covering various domains and statistical characteristics.
 
 You can also collect and refine your own text templates using our multi-agent framework. 
 
-#### 2.2 Apply text templates to generate textual descriptions for time-series data
+#### 3.2 Apply text templates to generate textual descriptions for time-series data
 
 We apply text templates to generate textual descriptions of time-series data by extracting statistical features (e.g., mean, standard deviation, trend) from each time window. These features are then filled into predefined templates to create descriptive narratives. Optionally, the descriptions are optimized using a large language model (LLM) for clarity and quality.
 
@@ -113,15 +154,15 @@ The results are saved in CSV files with the suffix `_with_descriptions.csv`.
 
 Dataset split details can be found here: [Dataset Split](supplementary/dataset_split.md).
 
-### 3. Preparation for target-aware generation (Optional) 
+### 4. Preparation for target-aware generation (Optional) 
 
-#### 3.1 Prepare the Guidance Set  
+#### 4.1 Prepare the Guidance Set  
 
 TarDiff requires a **guidance set** whose distribution closely approximates that of the downstream task targets. This distributional alignment allows the model to steer the diffusion process toward generating data that is more relevant and useful for downstream applications.  
 
 In our demo setting, we simply use the **training set** as a proxy for the guidance set. Users can later replace it with a more customized subset based on attribution methods (e.g., influence scores, gradient similarity) if desired.
 
-#### 3.2 Prepare the downstream model for guidance  
+#### 4.2 Prepare the downstream model for guidance  
 
 TarDiff requires a downstream model to compute gradients that guide the diffusion process toward generating task-relevant data.  
 To achieve optimal utility, users are encouraged to use their **own downstream models** that best reflect the real application scenario (e.g., mortality prediction, sepsis detection).
@@ -132,22 +173,22 @@ During inference, TarDiff uses the gradients of the downstream loss with respect
 **Optional: Use a simple RNN model as downstream guidance**  
 We provide an example RNN classifier for classification-based tasks. It takes input time series of shape `(batch_size, time_steps, features)`.
 
-### 4. Training the TimeCraft Framework
+### 5. Training the TimeCraft Framework
 
 Use `main.py` for model training and `visualize.py` for domain prompt visualization. 
 
 The detailed descriptions about command line arguments can be referred to in [this document](supplementary/training_details.md).
 
 
-###  5. Generation with TimeCraft Framework
+###  6. Generation with TimeCraft Framework
 
-####  5.1 Controllable Generation with Domain Prompts
+####  6.1 Controllable Generation with Domain Prompts
 Use `inference.py` for model inference. TimeCraft can generate cross-domain time series according to the given domain prompts (composed of prototypes) Commands can be found here: [inference details](supplementary/inference_prototype.md).
 
-####  5.2 Controllable Generation with Domain Prompts and Text
+####  6.2 Controllable Generation with Domain Prompts and Text
 Use `inference.py` for model inference. TimeCraft can generate desired time series according to the given domain prompts (composed of prototypes) and texts. Commands can be found here: [inference details](supplementary/inference_prototype_text.md).
 
-####  5.3 Target-Aware Generation for Specific Downstream Tasks
+####  6.3 Target-Aware Generation for Specific Downstream Tasks
 Use `inference.py` with the TarDiff module enabled to perform target-aware generation.  
 TimeCraft can generate synthetic time series specifically tailored to improve downstream task performance by integrating guidance signals from your task-specific model and guidance set. Commands can be found here: [inference details](supplementary/inference_guidance.md).
 
@@ -216,9 +257,6 @@ Rather than relying solely on stylistic or domain-level prompts, this mechanism 
 | **Guidance Module** | Injects the downstream gradients into each denoising step, gently steering the diffusion trajectory without altering the backbone generator. |
 
 Together, these core components form a seamless feedback loop where the **guidance set** defines the downstream data distribution, the **downstream model** encodes the specific task requirements, and the **guidance module** translates these signals into actionable gradients. As a result, TimeCraft efficiently guides the diffusion process to produce synthetic data tailored precisely to your downstream objectives.
-
-
-
 
 ## Contributing
 
