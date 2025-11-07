@@ -1,0 +1,347 @@
+- _target_: tsfm.data.builder.ConcatDatasetBuilderWithGlobalIndex
+  _args_:
+    - _target_: tsfm.data.builder.simple.SimpleEvalDatasetBuilder
+      dataset: electricity
+      offset: 21044
+      windows: 22.0
+      distance: 192
+      prediction_length: 192
+      context_length: 1000
+      patch_size: 32
+      storage_path: dataset_test/LSF/
+      sample_time_series:
+        _target_: tsfm.data.dataset.SampleTimeSeriesType
+        _args_: ["proportional"]
+
+- _target_: tsfm.data.builder.ConcatDatasetBuilderWithGlobalIndex
+  _args_:
+    - _target_: tsfm.data.builder.simple.SimpleEvalDatasetBuilder
+      dataset: electricity
+      offset: 21044
+      windows: 22.0
+      distance: 96
+      prediction_length: 96
+      context_length: 1000
+      patch_size: 32
+      storage_path: dataset_test/LSF/
+      sample_time_series:
+        _target_: tsfm.data.dataset.SampleTimeSeriesType
+        _args_: ["proportional"]
+
+- _target_: tsfm.data.builder.ConcatDatasetBuilderWithGlobalIndex
+  _args_:
+    - _target_: tsfm.data.builder.simple.SimpleEvalDatasetBuilder
+      dataset: electricity
+      offset: 21044
+      windows: 22.0
+      distance: 336
+      prediction_length: 336
+      context_length: 1000
+      patch_size: 32
+      storage_path: dataset_test/LSF/
+      sample_time_series:
+        _target_: tsfm.data.dataset.SampleTimeSeriesType
+        _args_: ["proportional"]
+
+- _target_: tsfm.data.builder.ConcatDatasetBuilderWithGlobalIndex
+  _args_:
+    - _target_: tsfm.data.builder.simple.SimpleEvalDatasetBuilder
+      dataset: electricity
+      offset: 21044
+      windows: 22.0
+      distance: 720
+      prediction_length: 720
+      context_length: 1000
+      patch_size: 32
+      storage_path: dataset_test/LSF/
+      sample_time_series:
+        _target_: tsfm.data.dataset.SampleTimeSeriesType
+        _args_: ["proportional"]
+
+- _target_: tsfm.data.builder.ConcatDatasetBuilderWithGlobalIndex
+  _args_:
+    - _target_: tsfm.data.builder.simple.SimpleEvalDatasetBuilder
+      dataset: ETTh1
+      offset: 11520
+      windows: 25.0
+      distance: 192
+      prediction_length: 192
+      context_length: 1000
+      patch_size: 32
+      storage_path: dataset_test/LSF/
+      sample_time_series:
+        _target_: tsfm.data.dataset.SampleTimeSeriesType
+        _args_: ["proportional"]
+
+- _target_: tsfm.data.builder.ConcatDatasetBuilderWithGlobalIndex
+  _args_:
+    - _target_: tsfm.data.builder.simple.SimpleEvalDatasetBuilder
+      dataset: ETTh1
+      offset: 11520
+      windows: 25.0
+      distance: 96
+      prediction_length: 96
+      context_length: 1000
+      patch_size: 32
+      storage_path: dataset_test/LSF/
+      sample_time_series:
+        _target_: tsfm.data.dataset.SampleTimeSeriesType
+        _args_: ["proportional"]
+
+- _target_: tsfm.data.builder.ConcatDatasetBuilderWithGlobalIndex
+  _args_:
+    - _target_: tsfm.data.builder.simple.SimpleEvalDatasetBuilder
+      dataset: ETTh1
+      offset: 11520
+      windows: 25.0
+      distance: 336
+      prediction_length: 336
+      context_length: 1000
+      patch_size: 32
+      storage_path: dataset_test/LSF/
+      sample_time_series:
+        _target_: tsfm.data.dataset.SampleTimeSeriesType
+        _args_: ["proportional"]
+
+- _target_: tsfm.data.builder.ConcatDatasetBuilderWithGlobalIndex
+  _args_:
+    - _target_: tsfm.data.builder.simple.SimpleEvalDatasetBuilder
+      dataset: ETTh1
+      offset: 11520
+      windows: 25.0
+      distance: 720
+      prediction_length: 720
+      context_length: 1000
+      patch_size: 32
+      storage_path: dataset_test/LSF/
+      sample_time_series:
+        _target_: tsfm.data.dataset.SampleTimeSeriesType
+        _args_: ["proportional"]
+
+- _target_: tsfm.data.builder.ConcatDatasetBuilderWithGlobalIndex
+  _args_:
+    - _target_: tsfm.data.builder.simple.SimpleEvalDatasetBuilder
+      dataset: ETTh2
+      offset: 11520
+      windows: 25.0
+      distance: 192
+      prediction_length: 192
+      context_length: 1000
+      patch_size: 32
+      storage_path: dataset_test/LSF/
+      sample_time_series:
+        _target_: tsfm.data.dataset.SampleTimeSeriesType
+        _args_: ["proportional"]
+
+- _target_: tsfm.data.builder.ConcatDatasetBuilderWithGlobalIndex
+  _args_:
+    - _target_: tsfm.data.builder.simple.SimpleEvalDatasetBuilder
+      dataset: ETTh2
+      offset: 11520
+      windows: 25.0
+      distance: 96
+      prediction_length: 96
+      context_length: 1000
+      patch_size: 32
+      storage_path: dataset_test/LSF/
+      sample_time_series:
+        _target_: tsfm.data.dataset.SampleTimeSeriesType
+        _args_: ["proportional"]
+
+- _target_: tsfm.data.builder.ConcatDatasetBuilderWithGlobalIndex
+  _args_:
+    - _target_: tsfm.data.builder.simple.SimpleEvalDatasetBuilder
+      dataset: ETTh2
+      offset: 11520
+      windows: 25.0
+      distance: 336
+      prediction_length: 336
+      context_length: 1000
+      patch_size: 32
+      storage_path: dataset_test/LSF/
+      sample_time_series:
+        _target_: tsfm.data.dataset.SampleTimeSeriesType
+        _args_: ["proportional"]
+
+- _target_: tsfm.data.builder.ConcatDatasetBuilderWithGlobalIndex
+  _args_:
+    - _target_: tsfm.data.builder.simple.SimpleEvalDatasetBuilder
+      dataset: ETTh2
+      offset: 11520
+      windows: 25.0
+      distance: 720
+      prediction_length: 720
+      context_length: 1000
+      patch_size: 32
+      storage_path: dataset_test/LSF/
+      sample_time_series:
+        _target_: tsfm.data.dataset.SampleTimeSeriesType
+        _args_: ["proportional"]
+- _target_: tsfm.data.builder.ConcatDatasetBuilderWithGlobalIndex
+  _args_:
+    - _target_: tsfm.data.builder.simple.SimpleEvalDatasetBuilder
+      dataset: weather
+      offset: 42156
+      windows: 49.0
+      distance: 192
+      prediction_length: 192
+      context_length: 1000
+      patch_size: 32
+      storage_path: dataset_test/LSF/
+      sample_time_series:
+        _target_: tsfm.data.dataset.SampleTimeSeriesType
+        _args_: ["proportional"]
+- _target_: tsfm.data.builder.ConcatDatasetBuilderWithGlobalIndex
+  _args_:
+    - _target_: tsfm.data.builder.simple.SimpleEvalDatasetBuilder
+      dataset: weather
+      offset: 42156
+      windows: 49.0
+      distance: 96
+      prediction_length: 96
+      context_length: 1000
+      patch_size: 32
+      storage_path: dataset_test/LSF/
+      sample_time_series:
+        _target_: tsfm.data.dataset.SampleTimeSeriesType
+        _args_: ["proportional"]
+- _target_: tsfm.data.builder.ConcatDatasetBuilderWithGlobalIndex
+  _args_:
+    - _target_: tsfm.data.builder.simple.SimpleEvalDatasetBuilder
+      dataset: weather
+      offset: 42156
+      windows: 49.0
+      distance: 336
+      prediction_length: 336
+      context_length: 1000
+      patch_size: 32
+      storage_path: dataset_test/LSF/
+      sample_time_series:
+        _target_: tsfm.data.dataset.SampleTimeSeriesType
+        _args_: ["proportional"]
+- _target_: tsfm.data.builder.ConcatDatasetBuilderWithGlobalIndex
+  _args_:
+    - _target_: tsfm.data.builder.simple.SimpleEvalDatasetBuilder
+      dataset: weather
+      offset: 42156
+      windows: 49.0
+      distance: 720
+      prediction_length: 720
+      context_length: 1000
+      patch_size: 32
+      storage_path: dataset_test/LSF/
+      sample_time_series:
+        _target_: tsfm.data.dataset.SampleTimeSeriesType
+        _args_: ["proportional"]
+- _target_: tsfm.data.builder.ConcatDatasetBuilderWithGlobalIndex
+  _args_:
+    - _target_: tsfm.data.builder.simple.SimpleEvalDatasetBuilder
+      dataset: ETTm1
+      offset: 46080
+      windows: 117.0
+      distance: 192
+      prediction_length: 192
+      context_length: 1000
+      patch_size: 32
+      storage_path: dataset_test/LSF/
+      sample_time_series:
+        _target_: tsfm.data.dataset.SampleTimeSeriesType
+        _args_: ["proportional"]
+- _target_: tsfm.data.builder.ConcatDatasetBuilderWithGlobalIndex
+  _args_:
+    - _target_: tsfm.data.builder.simple.SimpleEvalDatasetBuilder
+      dataset: ETTm1
+      offset: 46080
+      windows: 117.0
+      distance: 96
+      prediction_length: 96
+      context_length: 1000
+      patch_size: 32
+      storage_path: dataset_test/LSF/
+      sample_time_series:
+        _target_: tsfm.data.dataset.SampleTimeSeriesType
+        _args_: ["proportional"]
+- _target_: tsfm.data.builder.ConcatDatasetBuilderWithGlobalIndex
+  _args_:
+    - _target_: tsfm.data.builder.simple.SimpleEvalDatasetBuilder
+      dataset: ETTm1
+      offset: 46080
+      windows: 117.0
+      distance: 336
+      prediction_length: 336
+      context_length: 1000
+      patch_size: 32
+      storage_path: dataset_test/LSF/
+      sample_time_series:
+        _target_: tsfm.data.dataset.SampleTimeSeriesType
+        _args_: ["proportional"]
+- _target_: tsfm.data.builder.ConcatDatasetBuilderWithGlobalIndex
+  _args_:
+    - _target_: tsfm.data.builder.simple.SimpleEvalDatasetBuilder
+      dataset: ETTm1
+      offset: 46080
+      windows: 117.0
+      distance: 720
+      prediction_length: 720
+      context_length: 1000
+      patch_size: 32
+      storage_path: dataset_test/LSF/
+      sample_time_series:
+        _target_: tsfm.data.dataset.SampleTimeSeriesType
+        _args_: ["proportional"]
+- _target_: tsfm.data.builder.ConcatDatasetBuilderWithGlobalIndex
+  _args_:
+    - _target_: tsfm.data.builder.simple.SimpleEvalDatasetBuilder
+      dataset: ETTm2
+      offset: 46080
+      windows: 117.0
+      distance: 192
+      prediction_length: 192
+      context_length: 1000
+      patch_size: 32
+      storage_path: dataset_test/LSF/
+      sample_time_series:
+        _target_: tsfm.data.dataset.SampleTimeSeriesType
+        _args_: ["proportional"]
+- _target_: tsfm.data.builder.ConcatDatasetBuilderWithGlobalIndex
+  _args_:
+    - _target_: tsfm.data.builder.simple.SimpleEvalDatasetBuilder
+      dataset: ETTm2
+      offset: 46080
+      windows: 117.0
+      distance: 96
+      prediction_length: 96
+      context_length: 1000
+      patch_size: 32
+      storage_path: dataset_test/LSF/
+      sample_time_series:
+        _target_: tsfm.data.dataset.SampleTimeSeriesType
+        _args_: ["proportional"]
+- _target_: tsfm.data.builder.ConcatDatasetBuilderWithGlobalIndex
+  _args_:
+    - _target_: tsfm.data.builder.simple.SimpleEvalDatasetBuilder
+      dataset: ETTm2
+      offset: 46080
+      windows: 117.0
+      distance: 336
+      prediction_length: 336
+      context_length: 1000
+      patch_size: 32
+      storage_path: dataset_test/LSF/
+      sample_time_series:
+        _target_: tsfm.data.dataset.SampleTimeSeriesType
+        _args_: ["proportional"]
+- _target_: tsfm.data.builder.ConcatDatasetBuilderWithGlobalIndex
+  _args_:
+    - _target_: tsfm.data.builder.simple.SimpleEvalDatasetBuilder
+      dataset: ETTm2
+      offset: 46080
+      windows: 117.0
+      distance: 720
+      prediction_length: 720
+      context_length: 1000
+      patch_size: 32
+      storage_path: dataset_test/LSF/
+      sample_time_series:
+        _target_: tsfm.data.dataset.SampleTimeSeriesType
+        _args_: ["proportional"]

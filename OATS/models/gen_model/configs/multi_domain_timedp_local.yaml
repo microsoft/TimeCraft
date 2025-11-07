@@ -1,0 +1,111 @@
+seq_length: &seqlen 96 
+model:
+  base_learning_rate: 0.001
+  target: ldm.models.diffusion.ddpm_time.LatentDiffusion
+  params:
+    linear_start: 0.0005
+    linear_end: 0.1
+    num_timesteps_cond: 1
+    log_every_t: 40
+    timesteps: 200
+    loss_type: l1
+    first_stage_key: "context"
+    cond_stage_key: "context"
+    seq_len: *seqlen
+    channels: 1
+    cond_stage_trainable: True
+    concat_mode: False
+    scale_by_std: False # True
+    monitor: 'val/loss_simple_ema'
+    conditioning_key: crossattn
+    cond_drop_prob: 0.5
+    class_condition: True
+
+    scheduler_config: # 10000 warmup steps
+      target: ldm.lr_scheduler.LambdaLinearScheduler
+      params:
+        warm_up_steps: [1000]
+        cycle_lengths: [10000000000000]
+        f_start: [1.e-6]
+        f_max: [1.]
+        f_min: [ 1.]
+
+    unet_config:
+      target: ldm.modules.diffusionmodules.ts_unet.UNetModel
+      params:
+        seq_len: *seqlen
+        dims: 1
+        in_channels: 1
+        out_channels: 1
+        model_channels: 64
+        attention_resolutions: [ 1, 2, 4]   
+        num_res_blocks: 2
+        channel_mult: [ 1,2,4,4 ] 
+        num_heads: 8
+        use_scale_shift_norm: True
+        resblock_updown: True
+        context_dim: 32
+        repre_emb_channels: 32
+        latent_unit: 1
+        use_spatial_transformer: true
+        use_pam: true
+        class_conditionnal_number: 20
+
+    first_stage_config:  # no first stage model for ts data
+      target: ldm.models.autoencoder.IdentityFirstStage 
+
+    cond_stage_config:
+      target: ldm.modules.encoders.modules.DomainUnifiedPrototyper  
+      params:
+        dim: 32
+        window: *seqlen
+        latent_dim: 32  # 32 * 3
+        num_latents: 16
+        num_channels: 1
+
+data:
+  target: ldm.data.tsg_dataset.TSGDataModule
+  params:
+    data_path_dict:
+      CMIP6_dataset: "extracted_label_patches_CMIP6_dataset.npy"
+      CloudOpsTSF_dataset: "extracted_label_patches_CloudOpsTSF_dataset.npy"
+      ERA5_dataset: "extracted_label_patches_ERA5_dataset.npy"
+      LOOP_SEATTLE: "extracted_label_patches_LOOP_SEATTLE.npy"
+      LibCity_dataset: "extracted_label_patches_LibCity_dataset.npy"
+      OthersLOTSA_dataset: "extracted_label_patches_OthersLOTSA_dataset.npy"
+      PEMS07: "extracted_label_patches_PEMS07.npy"
+      PEMS_BAY: "extracted_label_patches_PEMS_BAY.npy"
+      Q-TRAFFIC: "extracted_label_patches_Q-TRAFFIC.npy"
+      australian_electricity_demand: "extracted_label_patches_australian_electricity_demand.npy"
+      azure_vm_traces_2017: "extracted_label_patches_azure_vm_traces_2017.npy"
+      buildings_900k: "extracted_label_patches_buildings_900k.npy"
+      favorita_sales: "extracted_label_patches_favorita_sales.npy"
+      largest_2017: "extracted_label_patches_largest_2017.npy"
+      largest_2018: "extracted_label_patches_largest_2018.npy"
+      largest_2019: "extracted_label_patches_largest_2019.npy"
+      largest_2020: "extracted_label_patches_largest_2020.npy"
+      largest_2021: "extracted_label_patches_largest_2021.npy"
+      solar_power: "extracted_label_patches_solar_power.npy"
+      wiki-rolling_nips: "extracted_label_patches_wiki-rolling_nips.npy"
+    window: *seqlen
+    val_portion: 0.1
+    batch_size: 256
+    num_workers: 8
+    normalize: centered_pit
+    drop_last: True
+    reweight: True
+    input_channels: 1
+
+lightning:
+  callbacks:
+    image_logger:
+      target: utils.callback_utils.TSLogger
+      params:
+        batch_frequency: 2000
+        max_images: 8
+        increase_log_steps: false
+
+
+  trainer:
+    benchmark: True
+    max_steps: 50000

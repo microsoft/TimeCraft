@@ -1,0 +1,117 @@
+_target_: tsfm.data.builder.ConcatDatasetBuilderWithGlobalIndex
+_args_:
+  - _target_: tsfm.data.builder.lotsa_v1.Buildings900KDatasetBuilder
+    datasets: ${cls_getattr:${._target_},dataset_list}
+    storage_path: ${env_get:LOTSA_100M_PATH}
+    weight_map:
+      buildings_900k: 0.40
+    sample_time_series:
+      _target_: tsfm.data.dataset.SampleTimeSeriesType
+      _args_: ["proportional"]
+  - _target_: tsfm.data.builder.lotsa_v1.BuildingsBenchDatasetBuilder
+    datasets: ["sceaux", "bdg-2_panther", "bdg-2_fox", "bdg-2_bear"]
+    storage_path: ${env_get:LOTSA_100M_PATH}
+    weight_map:
+      sceaux: 6.76
+      bdg-2_panther: 1.73
+      bdg-2_fox: 3.40
+      bdg-2_bear: 3.22
+    sample_time_series:
+      _target_: tsfm.data.dataset.SampleTimeSeriesType
+      _args_: ["proportional"]
+  - _target_: tsfm.data.builder.lotsa_v1.CloudOpsTSFDatasetBuilder
+    datasets: ["azure_vm_traces_2017", "borg_cluster_data_2011", "alibaba_cluster_trace_2018"]
+    storage_path: ${env_get:LOTSA_100M_PATH}
+    weight_map:
+      azure_vm_traces_2017: 1.04
+      borg_cluster_data_2011: 0.58
+      alibaba_cluster_trace_2018: 0.32
+    sample_time_series:
+      _target_: tsfm.data.dataset.SampleTimeSeriesType
+      _args_: ["proportional"]
+  - _target_: tsfm.data.builder.lotsa_v1.CMIP6DatasetBuilder
+    datasets: ['cmip6_1850', 'cmip6_1855']
+    storage_path: ${env_get:LOTSA_100M_PATH}
+    weight_map:
+      cmip6_1850: 0.85
+      cmip6_1855: 0.85
+    sample_time_series:
+      _target_: tsfm.data.dataset.SampleTimeSeriesType
+      _args_: ["proportional"]
+  - _target_: tsfm.data.builder.lotsa_v1.ERA5DatasetBuilder
+    datasets: ['era5_1989', 'era5_1990']
+    storage_path: ${env_get:LOTSA_100M_PATH}
+    weight_map:
+      era5_1989: 1.56
+      era5_1990: 1.56
+    sample_time_series:
+      _target_: tsfm.data.dataset.SampleTimeSeriesType
+      _args_: ["proportional"]
+  - _target_: tsfm.data.builder.lotsa_v1.GluonTSDatasetBuilder
+    datasets: ["wiki-rolling_nips", "solar_power", "elecdemand", "kaggle_web_traffic_weekly", "traffic_weekly", "australian_electricity_demand"]
+    storage_path: ${env_get:LOTSA_100M_PATH}
+    weight_map:
+      wiki-rolling_nips: 0.168
+      solar_power: 1460.95
+      elecdemand: 3.46
+      kaggle_web_traffic_weekly: 0.02
+      traffic_weekly: 0.02
+      australian_electricity_demand: 45.57
+    sample_time_series:
+      _target_: tsfm.data.dataset.SampleTimeSeriesType
+      _args_: ["proportional"]
+  - _target_: tsfm.data.builder.lotsa_v1.LargeSTDatasetBuilder
+    datasets: ["largest_2017", "largest_2018", "largest_2019", "largest_2020", "largest_2021"]
+    storage_path: ${env_get:LOTSA_100M_PATH}
+    weight_map:
+      largest_2017: 19.36
+      largest_2018: 19.36
+      largest_2019: 19.36
+      largest_2020: 19.36
+      largest_2021: 19.36
+    sample_time_series:
+      _target_: tsfm.data.dataset.SampleTimeSeriesType
+      _args_: ["proportional"]
+  - _target_: tsfm.data.builder.lotsa_v1.LibCityDatasetBuilder
+    datasets: ["LOOP_SEATTLE", "PEMS04", "PEMS07", "PEMS08", "PEMS_BAY", "Q-TRAFFIC"]
+    storage_path: ${env_get:LOTSA_100M_PATH}
+    weight_map:
+      LOOP_SEATTLE: 20.76
+      PEMS04: 3.35
+      PEMS07: 5.57
+      PEMS08: 3.53
+      PEMS_BAY: 10.30
+      Q-TRAFFIC: 1.16
+    sample_time_series:
+      _target_: tsfm.data.dataset.SampleTimeSeriesType
+      _args_: ["proportional"]
+  - _target_: tsfm.data.builder.lotsa_v1.OthersLOTSADatasetBuilder
+    datasets: ["favorita_sales", "AtrialFibrillation", "BIDMC32HR", "IEEEPPG", "MotorImagery", "PigArtPressure", "PigCVP", "SelfRegulationSCP1", "SelfRegulationSCP2", "TDBrain"]
+    storage_path: ${env_get:LOTSA_100M_PATH}
+    weight_map:
+      favorita_sales: 0.25
+      AtrialFibrillation: 0.13
+      BIDMC32HR: 0.79
+      IEEEPPG: 0.59
+      MotorImagery: 0.59
+      PigArtPressure: 0.40
+      PigCVP: 0.40
+      SelfRegulationSCP1: 0.18
+      SelfRegulationSCP2: 0.23
+      TDBrain: 0.51
+    sample_time_series:
+      _target_: tsfm.data.dataset.SampleTimeSeriesType
+      _args_: ["proportional"]
+  - _target_: tsfm.data.builder.lotsa_v1.ProEnFoDatasetBuilder
+    datasets: ["gfc14_load", "gfc17_load", "spain", "pdb", "elf", "covid19_energy"]
+    storage_path: ${env_get:LOTSA_100M_PATH}
+    weight_map:
+      gfc14_load: 3.46
+      gfc17_load: 3.46
+      spain: 6.93
+      pdb: 3.46
+      elf: 4.30
+      covid19_energy: 6.30
+    sample_time_series:
+      _target_: tsfm.data.dataset.SampleTimeSeriesType
+      _args_: ["proportional"]

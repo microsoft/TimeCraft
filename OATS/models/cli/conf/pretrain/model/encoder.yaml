@@ -1,0 +1,40 @@
+_target_: tsfm.model.encoder.TransformerEncoderPretrain
+module_kwargs:
+  _target_: builtins.dict
+  distr_output:
+    _target_: tsfm.distribution.MixtureOutput
+    components:
+      - _target_: tsfm.distribution.StudentTOutput
+      - _target_: tsfm.distribution.StudentTOutput
+      - _target_: tsfm.distribution.StudentTOutput
+      - _target_: tsfm.distribution.StudentTOutput
+  d_model: 384
+  num_layers: 8
+  patch_size: 32
+  max_seq_len: 512
+  attn_dropout_p: 0.0
+  dropout_p: 0.0
+  scaling: true
+min_patches: 2
+min_mask_ratio: 0.15
+max_mask_ratio: 0.5
+max_dim: 1
+loss_func:
+  _target_: tsfm.loss.packed.PackedNLLLoss
+lr: 1e-3
+weight_decay: 1e-1
+beta1: 0.9
+beta2: 0.98
+num_training_steps: ${mul:${trainer.max_epochs},${train_dataloader.num_batches_per_epoch}}
+num_warmup_steps: 10_000  # 10_000
+enable_influence_scoring: true  # Set to false to disable influence scoring
+enable_dataset_contribution_logging: true
+enable_reweighting: true 
+num_low_influence_to_remove: 16
+# influence_filter_frequency: 1
+influence_filter_ratio: 0.7
+use_cosine_similarity: false
+generate_after_epoch: 30
+select_from_generated: false
+add_noise: false
+mixup: true
