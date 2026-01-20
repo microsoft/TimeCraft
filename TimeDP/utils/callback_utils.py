@@ -185,13 +185,11 @@ class TSLogger(Callback):
             return True
         return False
 
-    def on_train_batch_end(self, trainer, pl_module, outputs, batch, batch_idx, dataloader_idx):
-    # def on_train_batch_end(self, trainer, pl_module, outputs, batch, batch_idx):
+    def on_train_batch_end(self, trainer, pl_module, outputs, batch, batch_idx, dataloader_idx=0):
         if not self.disabled and (pl_module.global_step > 0 or self.log_first_step):
             self.log_img(pl_module, batch, batch_idx, split="train")
 
-    def on_validation_batch_end(self, trainer, pl_module, outputs, batch, batch_idx, dataloader_idx):
-    # def on_validation_batch_end(self, trainer, pl_module, outputs, batch, batch_idx):
+    def on_validation_batch_end(self, trainer, pl_module, outputs, batch, batch_idx, dataloader_idx=0):
         if not self.disabled and pl_module.global_step > 0:
             self.log_img(pl_module, batch, batch_idx, split="val")
         if hasattr(pl_module, 'calibrate_grad_norm'):
@@ -202,22 +200,34 @@ class TSLogger(Callback):
 class CUDACallback(Callback):
     # see https://github.com/SeanNaren/minGPT/blob/master/mingpt/callback.py
     def on_train_epoch_start(self, trainer, pl_module):
-        # Reset the memory use counter
-        torch.cuda.reset_peak_memory_stats(trainer.root_gpu)
-        torch.cuda.synchronize(trainer.root_gpu)
         self.start_time = time.time()
+        # Reset the memory use counter (only for CUDA)
+        if torch.cuda.is_available():
+            try:
+                device_idx = trainer.strategy.root_device.index
+                if device_idx is not None:
+                    torch.cuda.reset_peak_memory_stats(device_idx)
+                    torch.cuda.synchronize(device_idx)
+            except (AttributeError, RuntimeError):
+                pass
 
     def on_train_epoch_end(self, trainer, pl_module):
-        torch.cuda.synchronize(trainer.root_gpu)
-        max_memory = torch.cuda.max_memory_allocated(trainer.root_gpu) / 2 ** 20
         epoch_time = time.time() - self.start_time
+        max_memory = 0
+
+        if torch.cuda.is_available():
+            try:
+                device_idx = trainer.strategy.root_device.index
+                if device_idx is not None:
+                    torch.cuda.synchronize(device_idx)
+                    max_memory = torch.cuda.max_memory_allocated(device_idx) / 2 ** 20
+            except (AttributeError, RuntimeError):
+                pass
 
         try:
-            max_memory = trainer.training_type_plugin.reduce(max_memory)
-            epoch_time = trainer.training_type_plugin.reduce(epoch_time)
-
-            rank_zero_info(f"Average Epoch time: {epoch_time:.2f} seconds")
-            rank_zero_info(f"Average Peak memory {max_memory:.2f}MiB")
+            rank_zero_info(f"Epoch time: {epoch_time:.2f} seconds")
+            if max_memory > 0:
+                rank_zero_info(f"Peak memory {max_memory:.2f}MiB")
         except AttributeError:
             pass
         
