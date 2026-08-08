@@ -17,19 +17,21 @@ from utils.cli_utils import nondefault_trainer_args
 data_root = os.environ['DATA_ROOT']
 
 def init_model_data_trainer(parser):
-    
+
     opt, unknown = parser.parse_known_args()
-    
+
     now = datetime.datetime.now().strftime("%Y-%m-%dT%H-%M-%S")
-    
+
     if opt.name:
         name = opt.name
+        cfg_name = opt.name
     elif opt.base:
         cfg_fname = os.path.split(opt.base[0])[-1]
         cfg_name = os.path.splitext(cfg_fname)[0]
         name = cfg_name
     else:
         name = ""
+        cfg_name = "default"
 
     seed_everything(opt.seed)
 
@@ -122,7 +124,7 @@ def init_model_data_trainer(parser):
     # calling these ourselves should not be necessary but it is.
     # lightning still takes care of proper multiprocessing though
     data.prepare_data()
-    data.setup()
+    data.setup(stage='fit')
     assert config.data.params.input_channels == 1, \
         "Assertion failed: Only univariate input is supported. Please ensure input_channels == 1."
     print("#### Data Preparation Finished #####")
@@ -245,7 +247,7 @@ def load_model_data(parser):
     # calling these ourselves should not be necessary but it is.
     # lightning still takes care of proper multiprocessing though
     data.prepare_data()
-    data.setup()
+    data.setup(stage='fit')
     print("#### Data Preparation Finished #####")
     
     return model, data, opt, logdir
